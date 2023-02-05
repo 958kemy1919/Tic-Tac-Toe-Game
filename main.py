@@ -1,125 +1,89 @@
 from random import randint
-import os
-
-print("Welcome to the Tic Tac Toe Game !!\nYou will be playing against computer !!!\n")
-
-my_player = int(input("Type 1 if you want to play first or press 2 if you want to play second: "))
-computer_player = None  
-
-mat = [["-","-","-"],["-","-","-"],["-","-","-"]]
-  
-if my_player == 1:
-    x_player = my_player
-    o_player = computer_player
-else:
-    o_player = my_player
-    x_player = computer_player
-  
-os.system("clear")
-  
-def table(mat):
-  print("\n    ")
-  for i in range(0,3):
-    for j in range(0,3):
-      if j < 2:
-        print(f"  {mat[i][j]}  |", end=" ")
-      else:
-        print(f"  {mat[i][j]}")
-    if i == 0 or i == 1:
-      print("-------------------")
-  print("\n")
-
-def x_player_move(mat):
-  if x_player == my_player:
-    table(mat)
-    row = int(input("Enter row (1, 2 or 3): "))
-    column = int(input("Enter column (1, 2 or 3): "))
-    while mat[row-1][column-1] != "-":
-      os.system("clear")
-      print("Try another position !!")
-      table(mat)
-      row = int(input("Enter row (1, 2 or 3): "))
-      column = int(input("Enter column (1, 2 or 3): "))
-    return [row,column]
-  else:
-    row = randint(0,3)
-    column = randint(0,3)
-    while mat[row-1][column-1] != "-":
-      row = randint(0,3)
-      column = randint(0,3)
-    return [row,column]
-    
-def o_player_move(mat):
-  table(mat)
-  if o_player != my_player:
-    row = randint(0,3)
-    column = randint(0,3)
-    while mat[row-1][column-1] != "-":
-      row = randint(0,3)
-      column = randint(0,3)
-    return [row,column]
-  else:
-    row = int(input("Enter row (1, 2 or 3): "))
-    column = int(input("Enter column (1, 2 or 3): "))
-    while mat[row-1][column-1] != "-":
-      os.system("clear")
-      print("Try another position !!")
-      table(mat)
-      row = int(input("Enter row (1, 2 or 3): "))
-      column = int(input("Enter column (1, 2 or 3): "))
-    return [row,column]
-
-def x_win(mat):
-  if mat[0][0]=="X" and mat[1][1]=="X" and mat[2][2]=="X" or mat[0][0]=="X" and mat[1][0]=="X" and mat[2][0]=="X" or mat[0][0]=="X" and mat[0][1]=="X" and mat[0][2]=="X" or mat[0][2]=="X" and mat[1][2]=="X" and mat[2][2]=="X" or mat[2][0]=="X" and mat[2][1]=="X" and mat[2][2]=="X" or mat[1][0]=="X" and mat[1][1]=="X" and mat[1][2]=="X" or mat[0][1]=="X" and mat[1][1]=="X" and mat[2][1]=="X" or mat[0][2]=="X" and mat[1][1]=="X" and mat[2][0]=="X":
-    return True
-  else:
-    return False
-
-def o_win(mat):
-  if mat[0][0]=="O" and mat[1][1]=="O" and mat[2][2]=="O" or mat[0][0]=="O" and mat[1][0]=="O" and mat[2][0]=="O" or mat[0][0]=="O" and mat[0][1]=="O" and mat[0][2]=="O" or mat[0][2]=="O" and mat[1][2]=="O" and mat[2][2]=="O" or mat[2][0]=="O" and mat[2][1]=="O" and mat[2][2]=="O" or mat[1][0]=="O" and mat[1][1]=="O" and mat[1][2]=="O" or mat[0][1]=="O" and mat[1][1]=="O" and mat[2][1]=="O" or mat[0][2]=="O" and mat[1][1]=="O" and mat[2][0]=="O":
-    return True
-  else:
-    return False
 
 
-def game():
-
-  moves = 0
-  while True:
-
-      moves += 1
-      position_x = x_player_move(mat)
-      mat[position_x[0]-1][position_x[1]-1] = "X"
-    
-      if x_win(mat):
-        os.system("clear")
-        table(mat)
-        if my_player == x_player:
-          print("You've won !!")
-        else:
-          print("You've lost")
-        break
-
-      if moves == 9:
-        os.system("clear")
-        table(mat)
-        print("Tied Round")
-        break
-    
-      moves += 1
-      position_o = o_player_move(mat)
-      mat[position_o[0]-1][position_o[1]-1] = "O"
-    
-      if o_win(mat):
-        os.system("clear")
-        table(mat)
-        if my_player == o_player:
-          print("You've won !!")
-        else:
-          print("You've lost")
-        break
-
-      os.system("clear")
+mat = [["-","-","-","-","-","-"],["-","-","-"," - ","-","-"],["-","-","-","-","-","-"],["-","-","-","-","-","-"],["-","-","-","-","-","-"],["-","-","-","-","-","-"]]
 
 
-game()
+def write(mat): # printing tic-tac-toe table
+    print("     -------------------------")
+    for i in range(0,3):
+        for j in range(0,3):
+            if j != 2:
+                print(f"    |   {mat[i][j]}",end="")
+            else:
+                print(f"    |   {mat[i][j]}   |")
+        print("     -------------------------")
+
+
+def check(mat,my_player): # checking if one of the players has won
+    for i in range(0,3):
+        for j in range(0,3):
+            if mat[i][j] == "X" and mat[i][j + 1] == "X" and mat[i][j + 2] == "X" or mat[i][j] == "X" and mat[i + 1][j] == "X" and mat[i + 2][j] == "X" or mat[i][j] == "X" and mat[i + 1][j + 1] == "X" and mat[i + 2][j + 2] == "X":
+                write(mat)
+                if my_player == 1:
+                    print("You won !!")
+                else:
+                    print("You lost !!")
+                return 1
+            elif mat[i][j] == "O" and mat[i][j + 1] == "O" and mat[i][j + 2] == "O" or mat[i][j] == "O" and mat[i + 1][j] == "O" and mat[i + 2][j] == "O" or mat[i][j] == "O" and mat[i + 1][j + 1] == "O" and mat[i + 2][j + 2] == "O":
+                write(mat)
+                if my_player == 2:
+                    print("You won !!")
+                else:
+                    print("You lost !!")
+                return 2
+    number_of_moves = 0
+    for i in range(0,3):
+        for j in range(0,3):
+            if mat[i][j] != "-":
+                number_of_moves += 1
+    if number_of_moves == 9:
+        write(mat)
+        print("Tied !!")
+        return 0
+    return -1
+
+
+my_player = int(input("Do you want to be X-player or O-player (type 1 for X, type 2 for Y): "))
+
+while True:
+
+    if my_player == 1: # if my player is X
+        row = int(input("Enter row: "))
+        column = int(input("Enter column: "))
+        while mat[row][column] != "-":
+            print("That field is filled !!")
+            row = int(input("Enter row: "))
+            column = int(input("Enter column: "))
+        mat[row][column] = "X"
+        if check(mat,my_player) == 1 or check(mat,my_player) == 2 or check(mat,my_player) == 0:
+            break
+        comp_row = randint(0,2)
+        comp_column = randint(0,2)
+        while mat[comp_row][comp_column] != "-":
+            comp_row = randint(0, 2)
+            comp_column = randint(0, 2)
+        mat[comp_row][comp_column] = "O"
+        if check(mat,my_player) == 1 or check(mat,my_player) == 2 or check(mat,my_player) == 0:
+            break
+        write(mat)
+
+    else: #if my player is O
+        comp_row = randint(0, 2)
+        comp_column = randint(0, 2)
+        while mat[comp_row][comp_column] != "-":
+            comp_row = randint(0, 2)
+            comp_column = randint(0, 2)
+        mat[comp_row][comp_column] = "X"
+        if check(mat, my_player) == 1 or check(mat, my_player) == 2 or check(mat, my_player) == 0:
+            break
+        write(mat)
+        row = int(input("Enter row: "))
+        column = int(input("Enter column: "))
+        while mat[row][column] != "-":
+            print("That field is filled !!")
+            row = int(input("Enter row: "))
+            column = int(input("Enter column: "))
+        mat[row][column] = "O"
+        if check(mat, my_player) == 1 or check(mat, my_player) == 2 or check(mat, my_player) == 0:
+            break
