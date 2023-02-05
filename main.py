@@ -44,6 +44,7 @@ def check(mat,my_player): # checking if one of the players has won
     return -1
 
 
+print("Welcome to the Tic Tac Toe Game !!\nYou will be playing against computer !!!\n")
 my_player = int(input("Do you want to be X-player or O-player (type 1 for X, type 2 for Y): "))
 
 while True:
